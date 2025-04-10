@@ -1,6 +1,14 @@
-output public_ips {
-  value       = {
-    for instance_key, ec2 in aws_instance.servers:
-    instance_key => ec2.public_ip
+output "ec2_public_ips" {
+  value = {
+    for name, instance in aws_instance.servers :
+    name => instance.public_ip
+  }
+}
+
+output "private_keys" {
+  sensitive = true
+  value = {
+    for name, key in local_file.private_keys :
+    name => key.filename
   }
 }
